@@ -1,14 +1,19 @@
 package se.pbt.newsstream.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
-public class NewsArticle {
-    private String title;
-    private String description;
-    private String url;
-    private String source;
-    private LocalDateTime publishedAt;
-
-    // Getters och setters
-    // Konstruktor och andra metoder
-}
+/**
+ * Represents a news article fetched from the News API, containing essential
+ * details about the article's content, source, and publication specifics.
+ */
+public record NewsArticle(
+        Source source,
+        String author,
+        String title,
+        String description,
+        String url,
+        String urlToImage,
+        @JsonProperty("publishedAt") LocalDateTime publishedAt,
+        String content
+) {}
