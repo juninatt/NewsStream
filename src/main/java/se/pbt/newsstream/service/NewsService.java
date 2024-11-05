@@ -1,47 +1,113 @@
 package se.pbt.newsstream.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import se.pbt.newsstream.client.NewsApiClient;
+import se.pbt.newsstream.mapper.NewsMapper;
+import se.pbt.newsstream.model.NewsApiArticleResponse;
 import se.pbt.newsstream.model.NewsArticle;
+import se.pbt.newsstream.repository.NewsRepository;
+import se.pbt.newsstream.util.UriBuilder;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
+/**
+ * Service for managing news data retrieval and processing.
+ * This class handles the logic for fetching articles from the News API based on various criteria
+ * and optionally saving the data to the database.
+ */
 @Service
 public class NewsService {
+    // Flag to determine if API results should be stored in the database
+    @Value("${news.save-results}")
+    private boolean saveResults;
+    private final NewsApiClient newsApiClient;
+    private final NewsRepository newsRepository;
 
-    private final WebClient webClient;
 
-
-    public NewsService(WebClient webClient) {
-        this.webClient = webClient;
+    /**
+     * Constructs a NewsService with the required dependencies.
+     */
+    @Autowired
+    public NewsService(NewsApiClient newsApiClient, NewsRepository newsRepository) {
+        this.newsApiClient = newsApiClient;
+        this.newsRepository = newsRepository;
     }
 
-    public List<NewsArticle> fetchNews(String topic) {
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/everything")
-                        .queryParam("q", topic)
-                        .queryParam("language", "en")
-                        .queryParam("sortBy", "publishedAt")
-                        .build())
-                .retrieve()
-                .bodyToFlux(NewsArticle.class)
-                .collectList()
-                .block();
+    /**
+     * Fetches news articles based on a topic from the News API and optionally stores them in the database.
+     * The number of articles returned can be limited.
+     */
+    public List<NewsArticle> fetchNews(String topic, boolean storeResults, int limit) {
+        String uri = UriBuilder.buildUriForTopic(topic, limit);
+        NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
+
+        List<NewsArticle> articles = response != null ? response.getNewsArticles().stream()
+                .map(NewsMapper::mapToNewsArticle)
+                .collect(toList()) : List.of();
+
+        if (storeResults) {
+            newsRepository.saveAll(articles);
+        }
+
+        return articles;
     }
 
-    public void testFetchNews() {
-        Mono<String> response = webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/everything")
-                        .queryParam("q", "technology")
-                        .queryParam("language", "en")
-                        .build())
-                .retrieve()
-                .bodyToMono(String.class);
+    /**
+     * Fetches news articles based on a category from the News API and optionally stores them in the database.
+     * The number of articles returned can be limited.
+     */
+    public List<NewsArticle> fetchNewsByCategory(String category, boolean storeResults, int limit) {
+        String uri = UriBuilder.buildUriForCategory(category, limit);
+        NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
 
-        System.out.println(response.block());
+        List<NewsArticle> articles = response != null ? response.getNewsArticles().stream()
+                .map(NewsMapper::mapToNewsArticle)
+                .collect(toList()) : List.of();
+
+        if (storeResults) {
+            newsRepository.saveAll(articles);
+        }
+
+        return articles;
+    }
+
+    /**
+     * Fetches the latest news article based on a given topic.
+     */
+    public NewsArticle getLatestNewsByTopic(String topic) {
+        List<NewsArticle> articles = fetchNews(topic, saveResults, 1);
+        return (articles != null && !articles.isEmpty()) ? articles.get(0) : null;
+    }
+
+    /**
+     * Fetches current top headlines for a list of regions and saves them in the database.
+     * The method prints the raw API response and logs saved articles.
+     */
+    public void getCurrentTopHeadlinesForRegions(List<String> regions) {
+        for (String region : regions) {
+            String uri = UriBuilder.buildUriForRegion(region);
+            NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
+
+            List<NewsArticle> articles = response != null ? response.getNewsArticles().stream()
+                    .map(NewsMapper::mapToNewsArticle)
+                    .collect(toList()) : List.of();
+
+            if (!articles.isEmpty()) {
+                System.out.println(newsRepository.saveAll(articles));
+                System.out.println("Articles saved to database for region: " + region);
+            }
+        }
+    }
+
+    /**
+     * Retrieves all saved news articles from the database.
+     */
+    public List<NewsArticle> getAllSavedArticles() {
+        return newsRepository.findAll();
     }
 
 }
