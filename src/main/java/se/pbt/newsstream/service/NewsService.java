@@ -42,7 +42,7 @@ public class NewsService {
      * Fetches news articles based on a topic from the News API and optionally stores them in the database.
      * The number of articles returned can be limited.
      */
-    public List<NewsArticle> fetchNews(String topic, boolean storeResults, int limit) {
+    public List<NewsArticle> fetchNews(String topic, int limit) {
         String uri = UriBuilder.buildUriForTopic(topic, limit);
         NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
 
@@ -50,7 +50,7 @@ public class NewsService {
                 .map(NewsMapper::mapToNewsArticle)
                 .collect(toList()) : List.of();
 
-        if (storeResults) {
+        if (saveResults) {
             newsRepository.saveAll(articles);
         }
 
@@ -61,7 +61,7 @@ public class NewsService {
      * Fetches news articles based on a category from the News API and optionally stores them in the database.
      * The number of articles returned can be limited.
      */
-    public List<NewsArticle> fetchNewsByCategory(String category, boolean storeResults, int limit) {
+    public List<NewsArticle> fetchNewsByCategory(String category, int limit) {
         String uri = UriBuilder.buildUriForCategory(category, limit);
         NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
 
@@ -69,7 +69,7 @@ public class NewsService {
                 .map(NewsMapper::mapToNewsArticle)
                 .collect(toList()) : List.of();
 
-        if (storeResults) {
+        if (saveResults) {
             newsRepository.saveAll(articles);
         }
 
@@ -80,7 +80,7 @@ public class NewsService {
      * Fetches the latest news article based on a given topic.
      */
     public NewsArticle getLatestNewsByTopic(String topic) {
-        List<NewsArticle> articles = fetchNews(topic, saveResults, 1);
+        List<NewsArticle> articles = fetchNews(topic, 1);
         return (articles != null && !articles.isEmpty()) ? articles.get(0) : null;
     }
 

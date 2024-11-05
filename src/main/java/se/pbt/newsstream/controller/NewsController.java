@@ -28,10 +28,9 @@ public class NewsController {
     @GetMapping("/api/news")
     public List<NewsArticle> getNewsOnTopicWithLimit(
             @RequestParam String topic,
-            @RequestParam(required = false, defaultValue = "10") int limit,
-            @RequestParam(required = false, defaultValue = "false") boolean storeResults) {
+            @RequestParam(required = false, defaultValue = "10") int limit) {
 
-        return newsService.fetchNews(topic, storeResults, limit);
+        return newsService.fetchNews(topic, limit);
     }
 
     /**
@@ -40,10 +39,9 @@ public class NewsController {
     @GetMapping("/api/news/category")
     public List<NewsArticle> getNewsByCategoryWithLimit(
             @RequestParam String category,
-            @RequestParam(required = false, defaultValue = "10") int limit,
-            @RequestParam(required = false, defaultValue = "false") boolean storeResults) {
+            @RequestParam(required = false, defaultValue = "10") int limit) {
 
-        return newsService.fetchNewsByCategory(category, storeResults, limit);
+        return newsService.fetchNewsByCategory(category, limit);
     }
 
     /**
