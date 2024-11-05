@@ -18,11 +18,9 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-@DisplayName("News Controller Tests:")
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NewsControllerTest {
-
     @MockBean
     private NewsService newsService;
     private final WebTestClient webTestClient;
