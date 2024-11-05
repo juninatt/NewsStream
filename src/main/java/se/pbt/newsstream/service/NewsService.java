@@ -21,8 +21,9 @@ import static java.util.stream.Collectors.toList;
  */
 @Service
 public class NewsService {
-    // Flag to determine if API results should be stored in the database
-    @Value("${news.save-results}")
+
+    // Determines whether API results should be persisted to the database
+    @Value("${news.persistence.save-results}")
     private boolean saveResults;
     private final NewsApiClient newsApiClient;
     private final NewsRepository newsRepository;

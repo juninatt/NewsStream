@@ -1,0 +1,34 @@
+# Application name (optional)
+spring:
+  application:
+    name: NewsStream
+
+  # Database configuration (replace placeholders with actual values)
+  datasource:
+    url: jdbc:h2:file:~/YOUR_DATABASE_PATH_HERE;AUTO_SERVER=TRUE  # File-based H2 database for persistence
+    driverClassName: org.h2.Driver
+    username: YOUR_DATABASE_USERNAME  # Replace with your database username
+    password: YOUR_DATABASE_PASSWORD  # Replace with your database password
+
+  # Updates the database schema to match entity classes at startup, without deleting data.
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+  # Enables the H2 web console (http://localhost:8080/h2-console) for debugging.
+  h2:
+    console:
+      enabled: false
+
+# News API configurations
+news:
+  api:
+    key: YOUR_API_KEY_HERE  # Replace with your actual API key for News API
+    default:
+      language: en          # Default language for API requests
+      sort-by: publishedAt  # Default sorting field for articles
+
+  # Application behavior settings
+  persistence:
+    save-results: true     # Controls whether API results should be saved to the database

@@ -1,10 +1,13 @@
+# Private documentation files
 HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-application.properties
 todo.md
+
+# Application configuration files
+application.yml
+application-test.yml
+
+# Maven
+target/
 
 ### STS ###
 .apt_generated

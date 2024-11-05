@@ -1,0 +1,30 @@
+# Test environment configuration
+
+spring:
+  # In-memory H2 database for testing (replace placeholders with actual values if needed)
+  datasource:
+    url: jdbc:h2:mem:testdb  # In-memory H2 database for isolated testing
+    driverClassName: org.h2.Driver
+    username: YOUR_TEST_DATABASE_USERNAME  # Replace with test database username if applicable
+    password: YOUR_TEST_DATABASE_PASSWORD  # Replace with test database password if applicable
+
+  # JPA configuration for testing
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # Creates and drops the schema for each test run
+
+  # H2 console enabled (http://localhost:8080/h2-console) for debugging purposes in the test environment
+  h2:
+    console:
+      enabled: true
+
+# News API configurations for testing
+news:
+  api:
+    default:
+      language: en          # Default language for API requests in tests
+      sort-by: publishedAt  # Default sorting field for articles in tests
+
+  # Test-specific behavior settings
+  persistence:
+    save-results: true      # Controls whether test results should be saved to the in-memory database
