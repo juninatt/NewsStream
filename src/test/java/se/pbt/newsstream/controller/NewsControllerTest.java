@@ -43,7 +43,7 @@ public class NewsControllerTest {
             List<NewsArticle> mockArticles = Collections.singletonList(sampleArticle);
             String expectedJson = objectMapper.writeValueAsString(mockArticles);
 
-            when(newsService.fetchNewsByCategory("business", 10)).thenReturn(mockArticles);
+            when(newsService.fetchNewsByCategoryWithLimit("business", 10)).thenReturn(mockArticles);
 
             webTestClient.get().uri("/api/news/category?category=business&limit=10&storeResults=false")
                     .exchange()
@@ -63,7 +63,7 @@ public class NewsControllerTest {
             List<NewsArticle> mockArticles = Collections.singletonList(sampleArticle);
             String expectedJson = objectMapper.writeValueAsString(mockArticles);
 
-            when(newsService.fetchNews("technology",5)).thenReturn(mockArticles);
+            when(newsService.findNewsByTopicWithLimit("technology",5)).thenReturn(mockArticles);
 
             webTestClient.get().uri("/api/news?topic=technology&limit=5&storeResults=false")
                     .exchange()
@@ -82,7 +82,7 @@ public class NewsControllerTest {
             NewsArticle sampleArticle = createSampleArticle();
             String expectedJson = objectMapper.writeValueAsString(sampleArticle);
 
-            when(newsService.getLatestNewsByTopic("health")).thenReturn(sampleArticle);
+            when(newsService.fetchLatestNewsByTopic("health")).thenReturn(sampleArticle);
 
             webTestClient.get().uri("/news/latest?topic=health")
                     .exchange()

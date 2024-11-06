@@ -42,7 +42,7 @@ public class NewsService {
      * Fetches news articles based on a topic from the News API and optionally stores them in the database.
      * The number of articles returned can be limited.
      */
-    public List<NewsArticle> fetchNews(String topic, int limit) {
+    public List<NewsArticle> findNewsByTopicWithLimit(String topic, int limit) {
         String uri = UriBuilder.buildUriForTopic(topic, limit);
         NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
 
@@ -61,7 +61,7 @@ public class NewsService {
      * Fetches news articles based on a category from the News API and optionally stores them in the database.
      * The number of articles returned can be limited.
      */
-    public List<NewsArticle> fetchNewsByCategory(String category, int limit) {
+    public List<NewsArticle> fetchNewsByCategoryWithLimit(String category, int limit) {
         String uri = UriBuilder.buildUriForCategory(category, limit);
         NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
 
@@ -79,8 +79,8 @@ public class NewsService {
     /**
      * Fetches the latest news article based on a given topic.
      */
-    public NewsArticle getLatestNewsByTopic(String topic) {
-        List<NewsArticle> articles = fetchNews(topic, 1);
+    public NewsArticle fetchLatestNewsByTopic(String topic) {
+        List<NewsArticle> articles = findNewsByTopicWithLimit(topic, 1);
         return (articles != null && !articles.isEmpty()) ? articles.get(0) : null;
     }
 
@@ -88,7 +88,7 @@ public class NewsService {
      * Fetches current top headlines for a list of regions and saves them in the database.
      * The method prints the raw API response and logs saved articles.
      */
-    public void getCurrentTopHeadlinesForRegions(List<String> regions) {
+    public void fetchCurrentHeadlinesByRegions(List<String> regions) {
         for (String region : regions) {
             String uri = UriBuilder.buildUriForRegion(region);
             NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
@@ -107,7 +107,7 @@ public class NewsService {
     /**
      * Retrieves all saved news articles from the database.
      */
-    public List<NewsArticle> getAllSavedArticles() {
+    public List<NewsArticle> findAllSavedArticles() {
         return newsRepository.findAll();
     }
 

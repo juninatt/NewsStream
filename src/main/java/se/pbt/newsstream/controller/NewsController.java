@@ -30,7 +30,7 @@ public class NewsController {
             @RequestParam String topic,
             @RequestParam(required = false, defaultValue = "10") int limit) {
 
-        return newsService.fetchNews(topic, limit);
+        return newsService.findNewsByTopicWithLimit(topic, limit);
     }
 
     /**
@@ -41,14 +41,14 @@ public class NewsController {
             @RequestParam String category,
             @RequestParam(required = false, defaultValue = "10") int limit) {
 
-        return newsService.fetchNewsByCategory(category, limit);
+        return newsService.fetchNewsByCategoryWithLimit(category, limit);
     }
 
     /**
      * Fetches the latest news article based on a given topic.
      */
     @GetMapping("/news/latest")
-    public NewsArticle fetchLatestNewsByTopic(@RequestParam String topic) {
-        return newsService.getLatestNewsByTopic(topic);
+    public NewsArticle getLatestNewsByTopic(@RequestParam String topic) {
+        return newsService.fetchLatestNewsByTopic(topic);
     }
 }
