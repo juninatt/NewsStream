@@ -1,6 +1,7 @@
 package se.pbt.newsstream.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.pbt.newsstream.model.NewsArticle;
@@ -14,6 +15,7 @@ import java.util.List;
  * fetch and optionally save the articles as {@link NewsArticle}.
  */
 @RestController
+@RequestMapping("/api/news")
 public class NewsController {
     private final NewsService newsService;
 
@@ -25,7 +27,7 @@ public class NewsController {
     /**
      * Fetches news articles based on a given topic.
      */
-    @GetMapping("/api/news")
+    @GetMapping("/topic")
     public List<NewsArticle> getNewsOnTopicWithLimit(
             @RequestParam String topic,
             @RequestParam(required = false, defaultValue = "10") int limit) {
@@ -36,7 +38,7 @@ public class NewsController {
     /**
      * Fetches news articles based on a given category.
      */
-    @GetMapping("/api/news/category")
+    @GetMapping("/category")
     public List<NewsArticle> getNewsByCategoryWithLimit(
             @RequestParam String category,
             @RequestParam(required = false, defaultValue = "10") int limit) {
@@ -47,7 +49,7 @@ public class NewsController {
     /**
      * Fetches the latest news article based on a given topic.
      */
-    @GetMapping("/news/latest")
+    @GetMapping("/topic/latest")
     public NewsArticle getLatestNewsByTopic(@RequestParam String topic) {
         return newsService.fetchLatestNewsByTopic(topic);
     }
