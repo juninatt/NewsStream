@@ -13,20 +13,26 @@ public class NewsArticle {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long databaseId;
-        private String title;
+        private final String title;
         @Column(length = 400)
-        private String description;
-        private String content;
-        private String url;
-        private String urlToImage;
-        private String author;
-        private OffsetDateTime publishedAt;
-        private String source;
+        private final String description;
+        private final String content;
+        private final String url;
+        private final String urlToImage;
+        private final String author;
+        private final OffsetDateTime publishedAt;
+        private final String source;
 
-        public NewsArticle() {}
-
-        public NewsArticle(String title, String description, String content, String url,
-                           String urlToImage, String author, OffsetDateTime publishedAt, String source) {
+        public NewsArticle(
+                String title,
+                String description,
+                String content,
+                String url,
+                String urlToImage,
+                String author,
+                OffsetDateTime publishedAt,
+                String source
+        ) {
                 this.title = title;
                 this.description = description;
                 this.content = content;
@@ -46,7 +52,6 @@ public class NewsArticle {
         public String getAuthor() { return author; }
         public OffsetDateTime getPublishedAt() { return publishedAt; }
         public String getSource() { return source; }
-
 
         @Override
         public String toString() {
