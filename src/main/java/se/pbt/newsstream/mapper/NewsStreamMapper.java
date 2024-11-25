@@ -6,7 +6,7 @@ import se.pbt.newsstream.model.NewsArticle;
 /**
  * Utility class for mapping between data transfer objects (DTOs) and entities.
  */
-public class NewsMapper {
+public class NewsStreamMapper {
 
     /**
      * Maps a {@link NewsArticleDTO} to a {@link NewsArticle}.

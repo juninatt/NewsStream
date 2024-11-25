@@ -11,18 +11,18 @@ import se.pbt.newsstream.model.NewsApiArticleResponse;
 @Component
 public class NewsApiClient {
 
-    private final WebClient webClient;
+    private final WebClient newsApiWebClient;
 
 
-    public NewsApiClient(WebClient webClient) {
-        this.webClient = webClient;
+    public NewsApiClient(WebClient newsApiWebClient) {
+        this.newsApiWebClient = newsApiWebClient;
     }
 
     /**
      * Sends a GET request to the News API and retrieves a response as a {@link NewsApiArticleResponse}}.
      */
     public NewsApiArticleResponse fetchArticles(String uri) {
-        return webClient.get()
+        return newsApiWebClient.get()
                 .uri(uri)
                 .retrieve()
                 .bodyToMono(NewsApiArticleResponse.class)

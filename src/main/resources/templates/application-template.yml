@@ -22,12 +22,17 @@ spring:
       enabled: false
 
 # News API configurations
-news:
-  api:
-    key: YOUR_API_KEY_HERE  # Replace with your actual API key for News API
-    default:
-      language: en          # Default language for API requests
-      sort-by: publishedAt  # Default sorting field for articles
+news-api:
+  api-key: YOUR_NEWS_API_KEY_HERE  # Replace with your actual API key for News API
+  base-url: https://newsapi.org/v2
+  default:
+    language: en          # Default language for API requests
+    sort-by: publishedAt  # Default sorting field for articles
+
+sendgrid:
+  api-key: YOUR_SENDGRID_API_KEY_HERE
+  base-url: https://api.sendgrid.com/v3
+
 
   # Application behavior settings
   persistence:
