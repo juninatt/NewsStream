@@ -12,7 +12,8 @@ import java.time.OffsetDateTime;
 public class NewsArticle {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long databaseId;
+        private Long id;
+
         private final String title;
         @Column(length = 400)
         private final String description;
@@ -43,7 +44,7 @@ public class NewsArticle {
                 this.source = source;
         }
 
-        public Long getDatabaseId() { return databaseId; }
+        public Long getId() { return id; }
         public String getTitle() { return title; }
         public String getDescription() { return description; }
         public String getContent() { return content; }
@@ -56,7 +57,7 @@ public class NewsArticle {
         @Override
         public String toString() {
                 return "NewsArticle{" +
-                        "id=" + databaseId +
+                        "id=" + id +
                         ", title='" + title + '\'' +
                         ", description='" + description + '\'' +
                         ", content='" + content + '\'' +
