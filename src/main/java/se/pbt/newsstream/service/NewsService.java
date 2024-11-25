@@ -5,26 +5,33 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import se.pbt.newsstream.client.NewsApiClient;
+import se.pbt.newsstream.mapper.NewsStreamMapper;
+import se.pbt.newsstream.model.NewsApiArticleResponse;
 import se.pbt.newsstream.model.NewsArticle;
+import se.pbt.newsstream.util.UriBuilder;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Service for managing news articles including fetching, saving, and publishing.
+ * The service integrates with {@link NewsApiClient} for API communication,
+ * {@link DatabaseService} for persistence, and {@link Sinks.Many} for reactive article streaming.
  */
 @Service
 public class NewsService {
-    @Value("${news.persistence.save-results}")
+    @Value("${persistence.save-results}")
     private boolean saveResults;
-    private final NewsApiService newsApiService;
     private final DatabaseService databaseService;
+    private final NewsApiClient newsApiClient;
     private final Sinks.Many<NewsArticle> articleSink = Sinks.many().multicast().onBackpressureBuffer();
 
     @Autowired
-    public NewsService(NewsApiService newsApiService, DatabaseService databaseService) {
-        this.newsApiService = newsApiService;
+    public NewsService(DatabaseService databaseService, NewsApiClient newsApiClient) {
         this.databaseService = databaseService;
+        this.newsApiClient = newsApiClient;
     }
 
     //  News API communication
@@ -40,14 +47,22 @@ public class NewsService {
      * Fetches news articles by topic with a specified limit.
      */
     public List<NewsArticle> findNewsByTopicWithLimit(String topic, int limit) {
-        return newsApiService.fetchArticlesByTopic(topic, limit);
+        String uri = UriBuilder.buildUriForTopic(topic, limit);
+        NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
+        return response != null ? response.getNewsArticles().stream()
+                .map(NewsStreamMapper::mapToNewsArticle)
+                .collect(Collectors.toList()) : List.of();
     }
 
     /**
      * Fetches news articles by category with a specified limit.
      */
     public List<NewsArticle> fetchNewsByCategoryWithLimit(String category, int limit) {
-        return newsApiService.fetchArticlesByCategory(category, limit);
+        String uri = UriBuilder.buildUriForCategory(category, limit);
+        NewsApiArticleResponse response = newsApiClient.fetchArticles(uri);
+        return response != null ? response.getNewsArticles().stream()
+                .map(NewsStreamMapper::mapToNewsArticle)
+                .collect(Collectors.toList()) : List.of();
     }
 
     /**
@@ -59,17 +74,6 @@ public class NewsService {
     }
 
     // Including persistence
-
-    /**
-     * Fetches and saves current headlines for multiple regions.
-     */
-    public void fetchAndSaveCurrentHeadlinesByRegions(List<String> regions) {
-        regions.forEach(region -> {
-            List<NewsArticle> articles = newsApiService.fetchArticlesByTopic(region, 5);
-            saveArticlesIfEnabled(articles);
-            System.out.println("Articles saved for region: " + region);
-        });
-    }
 
     /**
      * Fetches and publishes news articles by a specific topic.
