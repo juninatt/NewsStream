@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.pbt.newsstream.model.Subscription;
+import se.pbt.newsstream.notification.notifier.EmailNotifier;
+import se.pbt.newsstream.notification.notifier.Notifier;
+import se.pbt.newsstream.notification.notifier.SMSNotifier;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

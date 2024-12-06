@@ -1,9 +1,8 @@
-package se.pbt.newsstream;
+package se.pbt.newsstream.notification;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import se.pbt.newsstream.repository.SubscriptionRepository;
-import se.pbt.newsstream.notification.NotificationManager;
 
 @Component
 public class NotificationScheduler {

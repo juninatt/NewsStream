@@ -1,4 +1,4 @@
-package se.pbt.newsstream.notification;
+package se.pbt.newsstream.notification.notifier;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;

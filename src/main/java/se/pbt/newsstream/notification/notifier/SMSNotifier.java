@@ -1,4 +1,4 @@
-package se.pbt.newsstream.notification;
+package se.pbt.newsstream.notification.notifier;
 
 import org.springframework.stereotype.Component;
 import se.pbt.newsstream.model.Subscription;
