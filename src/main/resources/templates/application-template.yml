@@ -21,6 +21,11 @@ spring:
     console:
       enabled: false
 
+# Server configurations
+server:
+  servlet:
+    context-path: /newsstream  # Sets the base context path for all API endpoints
+
 # News API configurations
 news-api:
   api-key: YOUR_NEWS_API_KEY_HERE  # Replace with your actual API key for News API
@@ -29,11 +34,11 @@ news-api:
     language: en          # Default language for API requests
     sort-by: publishedAt  # Default sorting field for articles
 
+# SendGrid configurations
 sendgrid:
   api-key: YOUR_SENDGRID_API_KEY_HERE
   base-url: https://api.sendgrid.com/v3
 
-
-  # Application behavior settings
-  persistence:
-    save-results: true     # Controls whether API results should be saved to the database
+# Application behavior settings
+persistence:
+  save-results: true     # Controls whether API results should be saved to the database
