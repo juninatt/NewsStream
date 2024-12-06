@@ -9,8 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "news-api")
 public record NewsApiProperties(
         String apiKey,
-        String baseUrl,
-        DefaultProperties defaultProperties
+        String baseUrl
 ) {
     public record DefaultProperties(String language, String sortBy) {}
 }

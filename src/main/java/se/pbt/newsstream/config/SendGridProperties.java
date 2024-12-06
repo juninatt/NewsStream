@@ -7,4 +7,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Maps properties under the `sendgrid` prefix from the application configuration (e.g., application.yml).
  */
 @ConfigurationProperties(prefix = "sendgrid")
-public record SendGridProperties(String apiKey, String baseUrl) {}
+public record SendGridProperties(String apiKey, String baseUrl, String senderEmail) {}
