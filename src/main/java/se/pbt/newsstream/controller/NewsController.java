@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Controller for handling HTTP requests from the user related to news articles.
  * This class forwards the requests to the News API through the {@link NewsService} to
- * fetch and optionally save the articles as {@link NewsArticle}.
+ * fetch and optionally save the articles as {@link NewsArticle} objects.
  */
 @RestController
 @RequestMapping("/api/news")
@@ -25,7 +25,7 @@ public class NewsController {
 
 
     /**
-     * Fetches news articles based on a given topic.
+     * Fetches a list of {@link NewsArticle}s based on a given topic.
      */
     @GetMapping("/topic")
     public List<NewsArticle> getNewsOnTopicWithLimit(
@@ -36,7 +36,7 @@ public class NewsController {
     }
 
     /**
-     * Fetches news articles based on a given category.
+     * Fetches a list of {@link NewsArticle}s based on a given category.
      */
     @GetMapping("/category")
     public List<NewsArticle> getNewsByCategoryWithLimit(
@@ -47,7 +47,7 @@ public class NewsController {
     }
 
     /**
-     * Fetches the latest news article based on a given topic.
+     * Fetches the latest {@link NewsArticle} based on a given topic.
      */
     @GetMapping("/topic/latest")
     public NewsArticle getLatestNewsByTopic(@RequestParam String topic) {
