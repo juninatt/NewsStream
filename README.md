@@ -51,6 +51,9 @@ mvn spring-boot:run
 * Testing: Access the app at `http://localhost:8080` to test scheduled fetching and notifications.
 
 ---
+### Known Issues
+To avoid email delivery failures it is important to adhere to industry sender requirements, which are updated regularly.
+See https://sendgrid.com/en-us/blog/email-delivery-failure-causes for more information.
 
 ### Author
 Petter Bergström / juninatt
