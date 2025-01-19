@@ -1,4 +1,4 @@
-package se.pbt.newsstream.util;
+package se.pbt.newsstream.apiclient.newsapi.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,13 +16,11 @@ public final class UriBuilder {
 
     private UriBuilder() {}
 
-    // Sets the language parameter for News API requests
     @Value("${news.api.language:en}")
     public void setLanguage(String lang) {
         UriBuilder.language = lang;
     }
 
-    // Field used to sort articles in API requests
     @Value("${news.api.sortBy:publishedAt}")
     public void setSortBy(String sort) {
         UriBuilder.sortBy = sort;

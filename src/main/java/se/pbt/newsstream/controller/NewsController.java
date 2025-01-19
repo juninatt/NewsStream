@@ -50,7 +50,7 @@ public class NewsController {
      * Fetches the latest {@link NewsArticle} based on a given topic.
      */
     @GetMapping("/topic/latest")
-    public NewsArticle getLatestNewsByTopic(@RequestParam String topic) {
-        return newsService.fetchLatestNewsByTopic(topic);
+    public NewsArticle getLatestNewsByTopic(@RequestParam String topic, int limit) {
+        return newsService.findNewsByTopicWithLimit(topic, 1).get(0);
     }
 }

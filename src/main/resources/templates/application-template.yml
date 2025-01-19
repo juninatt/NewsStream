@@ -34,11 +34,15 @@ news-api:
     language: en          # Default language for API requests
     sort-by: publishedAt  # Default sorting field for articles
 
-# SendGrid configurations
-sendgrid:
-  api-key: YOUR_SENDGRID_API_KEY_HERE
-  base-url: https://api.sendgrid.com/v3
+# MailSender configurations
+mail-sender:
+  email:
+    api-key: YOUR_MAILSENDER_API_KEY_HERE  # Replace with your MailSender API key
+    base-url: https://api.mailersend.com/v1/email
+    sender-address: YOUR_VERIFIED_SENDER_ADDRESS  # Replace with your verified sender address
+    sender-name: NewsStream Notifications  # Replace with your sender's display name
+  sms:  # Placeholder for future SMS integration
 
 # Application behavior settings
 persistence:
-  save-results: true     # Controls whether API results should be saved to the database
+  save-results: true  # Controls whether API results should be saved to the database

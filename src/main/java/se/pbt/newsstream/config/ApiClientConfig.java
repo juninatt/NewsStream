@@ -1,61 +1,48 @@
 package se.pbt.newsstream.config;
 
-import com.sendgrid.SendGrid;
+import com.mailersend.sdk.MailerSend;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Configuration class for setting up beans for external API integrations.
- * Automatically binds properties defined in application.yml to the {@link NewsApiProperties} and {@link SendGridProperties}.
- * Configures WebClients for the News API and SendGrid API, as well as a SendGrid client for email operations.
+ * Configuration class for creating beans related to external API integrations.
+ * Configures clients for interacting with the News API and MailerSend API.
+ * Uses {@link  NewsApiProperties} and {@link MailSenderProperties} to load settings from {@code application.yml}.
  */
 @Configuration
-@EnableConfigurationProperties({NewsApiProperties.class, SendGridProperties.class})
+@EnableConfigurationProperties({NewsApiProperties.class, MailSenderProperties.class})
 public class ApiClientConfig {
-
     private final NewsApiProperties newsApiProperties;
-    private final SendGridProperties sendGridProperties;
+    private final MailSenderProperties mailSenderProperties;
 
-    /**
-     * Initializes the configuration with the properties for News API and SendGrid API.
-     */
-    public ApiClientConfig(NewsApiProperties newsApiProperties, SendGridProperties sendGridProperties) {
+    public ApiClientConfig(NewsApiProperties newsApiProperties, MailSenderProperties mailSenderProperties) {
         this.newsApiProperties = newsApiProperties;
-        this.sendGridProperties = sendGridProperties;
+        this.mailSenderProperties = mailSenderProperties;
     }
 
     /**
-     * Creates a WebClient bean for interacting with the News API.
-     * Uses base URL and API key from NewsApiProperties.
+     * Creates a {@link WebClient} bean configured for the News API.
      */
     @Bean
     public WebClient newsApiWebClient() {
         return WebClient.builder()
                 .baseUrl(newsApiProperties.baseUrl())
-                .defaultHeader("Authorization", newsApiProperties.apiKey())
+                .defaultHeader(HttpHeaders.AUTHORIZATION, newsApiProperties.apiKey())
                 .build();
     }
 
     /**
-     * Creates a WebClient bean for interacting with the SendGrid API.
-     * Uses base URL and API key from SendGridProperties.
+     * Creates a {@link MailerSend} bean for interacting with the MailerSend API.
      */
     @Bean
-    public WebClient sendGridWebClient() {
-        return WebClient.builder()
-                .baseUrl(sendGridProperties.baseUrl())
-                .defaultHeader("Authorization", "Bearer " + sendGridProperties.apiKey())
-                .build();
-    }
-
-    /**
-     * Creates a SendGrid client for sending emails.
-     */
-    @Bean
-    public SendGrid sendGridClient() {
-        return new SendGrid(sendGridProperties.apiKey());
+    public MailerSend mailSender() {
+        MailerSend mailerSend = new MailerSend();
+        mailerSend.setToken(mailSenderProperties.email().apiKey());
+        return mailerSend;
     }
 }
+
 

@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/subscribers")
 public class SubscriberController {
-
     private final SubscriberService subscriberService;
 
     public SubscriberController(SubscriberService subscriberService) {
@@ -64,7 +63,7 @@ public class SubscriberController {
             @PathVariable long subscriberId,
             @RequestBody @Valid SubscriptionDTO subscriptionDTO
     ) {
-        Subscription createdSubscription = subscriberService.addSubscriptionToSubscriber(subscriberId, subscriptionDTO);
+        Subscription createdSubscription = subscriberService.addSubscription(subscriberId, subscriptionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubscription);
     }
 }
