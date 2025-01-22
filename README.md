@@ -34,7 +34,6 @@ git clone https://github.com/juninatt/NewsStream.git
 
 3. Build and run the app:
 ```bash
-```bash
 mvn clean install
 mvn spring-boot:run
 ```
